@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DescargasController;
+use App\Http\Controllers\RegistroInternoController;
+use App\Http\Controllers\DescargaInternaController;
 
 Route::get('/', function () {return view('index');})->name('home');
 
@@ -35,6 +37,17 @@ Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.s
 Route::get('/descargas/{modulo}', [DescargasController::class, 'show'])->name('descargas.show');
 
 Route::get('/descargas/{modulo}/exportar', [DescargasController::class, 'exportar'])->name('descargas.exportar');
+
+Route::get('/registro-interno', [RegistroInternoController::class, 'index'])->name('registro.interno');
+Route::post('/registro-interno/verificar', [RegistroInternoController::class, 'verificar'])->name('registro.interno.verificar');
+Route::post('/registro-interno/guardar', [RegistroInternoController::class, 'guardar'])->name('registro.interno.guardar');
+Route::get('/registro-interno/salir', [RegistroInternoController::class, 'salir'])->name('registro.interno.salir');
+
+Route::get('/colectas/descargas', [DescargaInternaController::class, 'index'])->name('colectas.descargas.login');
+Route::post('/colectas/descargas/verificar', [DescargaInternaController::class, 'verificar'])->name('colectas.descargas.verificar');
+Route::get('/colectas/descargas/panel', [DescargaInternaController::class, 'panel'])->name('colectas.descargas.panel');
+Route::post('/colectas/descargas/exportar', [DescargaInternaController::class, 'exportar'])->name('colectas.descargas.exportar');
+Route::get('/colectas/descargas/salir', [DescargaInternaController::class, 'salir'])->name('colectas.descargas.salir');
 
 Route::get('/proxy/enciclovida/conteo', function (Request $request) {
     $queryString = $request->getQueryString();

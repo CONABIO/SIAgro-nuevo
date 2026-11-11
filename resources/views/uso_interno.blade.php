@@ -26,7 +26,7 @@
         </div>
         <div class="row g-4 mb-5">
             <div class="col-12 col-md-4">
-                <a href="https://siagro.conabio.gob.mx/colectas_gef_interna/registro/" target="_blank" class="internal-access-card">
+                <a href="{{ route('registro.interno') }}"  target="_blank" class="internal-access-card">
                     <div>
                         <div class="access-avatar avatar-admin">
                             <i class="bi bi-person-badge-fill"></i>
@@ -43,7 +43,7 @@
                 </a>
             </div>
             <div class="col-12 col-md-4">
-                <a href="https://siagro.conabio.gob.mx/colectas_gef_interna/download/" target="_blank" class="internal-access-card">
+                <a href="{{ route('colectas.descargas.login') }}" target="_blank" class="internal-access-card">
                     <div>
                         <div class="access-avatar avatar-download">
                             <i class="bi bi-cloud-arrow-down-fill"></i>

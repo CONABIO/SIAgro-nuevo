@@ -145,7 +145,7 @@
             border: 1px solid #e5e7eb;
             border-radius: 14px;
             box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.12);
-            max-height: 390px;
+            max-height: 400px;
             overflow-y: auto;
             z-index: 1050;
             display: none;
@@ -162,6 +162,7 @@
             color: inherit;
             transition: all 0.15s ease;
             margin-bottom: 2px;
+            border-bottom: 1px solid #f3f4f6;
         }
 
         .search-card-result:hover {
@@ -177,13 +178,19 @@
             padding: 3px 8px;
             border-radius: 6px;
             margin-right: 8px;
+            white-space: nowrap;
         }
 
+        /* Badges por categoría */
         .badge-cat-bd      { background-color: #e0f2fe; color: #0369a1; }
         .badge-cat-app     { background-color: #dcfce7; color: #15803d; }
         .badge-cat-doc     { background-color: #fef3c7; color: #b45309; }
         .badge-cat-tool    { background-color: #f3e8ff; color: #7e22ce; }
         .badge-cat-section { background-color: #f1f5f9; color: #475569; }
+        .badge-cat-especie { background-color: #ecfdf5; color: #047857; }
+        .badge-cat-cartel  { background-color: #fee2e2; color: #991b1b; }
+        .badge-cat-video   { background-color: #ffedd5; color: #c2410c; }
+        .badge-cat-libro   { background-color: #fce7f3; color: #9d174d; }
     </style>
 </head>
 
@@ -208,7 +215,7 @@
                         <div class="search-box-modern">
                             <i class="bi bi-search text-muted fs-5 me-1"></i>
                             <input type="text" id="indexGlobalSearch" class="search-input-field"
-                                   placeholder="Escribe lo que buscas (ej. Maíces, Kobo, Canastas, Nutrición, API)..."
+                                   placeholder="Escribe lo que buscas (ej. Calabaza, Quelite, Maíces, Bases)..."
                                    autocomplete="off">
 
                             <button type="button" id="btnClearSearch" class="btn-clear-search" title="Limpiar">
@@ -223,20 +230,20 @@
                         <div id="searchResultsDropdown" class="search-results-floating"></div>
                         <div class="quick-tags-wrapper">
                             <span class="quick-tag-label"><i class="bi bi-stars text-warning me-1"></i>Frecuentes:</span>
+                            <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Calabaza')">
+                                <i class="bi bi-flower1 text-warning"></i> Calabazas
+                            </a>
+                            <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Quelite')">
+                                <i class="bi bi-tree text-success"></i> Quelites
+                            </a>
                             <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Maíces')">
-                                <i class="bi bi-sun text-warning"></i> Maíces Nativos
+                                <i class="bi bi-sun text-warning"></i> Maíces
                             </a>
-                            <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Canastas')">
-                                <i class="bi bi-basket text-success"></i> Canastas del Bien Comer
-                            </a>
-                            <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Colectas GEF')">
-                                <i class="bi bi-geo-alt text-info"></i> Colectas GEF
+                            <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Bases')">
+                                <i class="bi bi-database text-info"></i> Bases de datos
                             </a>
                             <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('Kobo')">
                                 <i class="bi bi-journal-check text-primary"></i> Manual Kobo
-                            </a>
-                            <a href="javascript:void(0)" class="quick-tag-btn" onclick="searchExample('API')">
-                                <i class="bi bi-terminal text-secondary"></i> API / Datos
                             </a>
                         </div>
                     </div>
@@ -418,218 +425,101 @@
             </div>
         </footer>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const portalCatalog = [
-            {
-                title: "Proyecto Global de Maíces Nativos",
-                desc: "Colecciones de razas y parientes silvestres de maíz en México.",
-                category: "Base de datos",
-                badgeClass: "badge-cat-bd",
-                url: "{{ route('bases.datos') }}",
-                keywords: ["maiz", "maices", "nativo", "criollo", "teocintle", "razas", "semillas", "parientes"]
-            },
-            {
-                title: "Canastas Regionales del Bien Comer",
-                desc: "Dieta tradicional, milpa y alimentos locales en comunidades indígenas.",
-                category: "Base de datos",
-                badgeClass: "badge-cat-bd",
-                url: "{{ route('bases.datos') }}",
-                keywords: ["canastas", "canasta", "bien comer", "nutricion", "alimentos", "dieta", "milpa", "comida", "recetas"]
-            },
-            {
-                title: "Colectas GEF Agrobiodiversidad",
-                desc: "Germoplasma de Capsicum, Phaseolus, Amaranthus, Agaves y parientes.",
-                category: "Base de datos",
-                badgeClass: "badge-cat-bd",
-                url: "{{ route('bases.datos') }}",
-                keywords: ["colectas", "colecta", "gef", "frijol", "chile", "agave", "amaranto", "germoplasma", "biodiversidad"]
-            },
-            {
-                title: "Tablas de Composición de Alimentos (INCMNSZ)",
-                desc: "Base de datos extensa de nutrición y aporte calórico del INCMNSZ.",
-                category: "Base de datos",
-                badgeClass: "badge-cat-bd",
-                url: "{{ route('bases.datos') }}",
-                keywords: ["composicion", "nutricion", "alimentos", "incmnsz", "calorias", "proteinas", "nutrientes"]
-            },
-            {
-                title: "Grupos de Enfoque sobre Agrobiodiversidad",
-                desc: "Estudios bioculturales en Chihuahua, Chiapas, CDMX, Oaxaca y Michoacán.",
-                category: "Base de datos",
-                badgeClass: "badge-cat-bd",
-                url: "{{ route('bases.datos') }}",
-                keywords: ["grupos", "enfoque", "chihuahua", "oaxaca", "chiapas", "social", "campesinos"]
-            },
-            {
-                title: "Manual Kobotoolbox-CONABIO",
-                desc: "Guía técnica y manuales para captura de datos en campo con Kobo.",
-                category: "Publicación",
-                badgeClass: "badge-cat-doc",
-                url: "{{ route('materiales.tecnicos') }}",
-                keywords: ["kobo", "manual", "kobotoolbox", "formulario", "captura", "campo", "pdf"]
-            },
-            {
-                title: "Taller: Datos Abiertos de Agrobiodiversidad",
-                desc: "Metodologías, intercambio y licencias de datos abiertos de investigación.",
-                category: "Publicación",
-                badgeClass: "badge-cat-doc",
-                url: "{{ route('materiales.tecnicos') }}",
-                keywords: ["datos abiertos", "taller", "zenodo", "gobernanza", "metodologia"]
-            },
-            {
-                title: "Cartel Oficial del SIAgroBD",
-                desc: "Cartel presentado en el 2o Congreso Internacional de Agrobiodiversidad.",
-                category: "Publicación",
-                badgeClass: "badge-cat-doc",
-                url: "{{ route('materiales.tecnicos') }}",
-                keywords: ["cartel", "congreso", "zenodo", "resumen", "poster"]
-            },
-            {
-                title: "Catálogo de Especies de la Agrobiodiversidad",
-                desc: "Exploración de especies cultivadas y parientes en Enciclovida y Naturalista.",
-                category: "Especies",
-                badgeClass: "badge-cat-app",
-                url: "{{ route('especies') }}",
-                keywords: ["especies", "enciclovida", "naturalista", "plantas", "hongos", "animales", "taxonomia"]
-            },
-            {
-                title: "Aplicaciones y Mapas Interactivos",
-                desc: "Visualizadores de colectas, exploradores espaciales y tableros Shiny.",
-                category: "Aplicación",
-                badgeClass: "badge-cat-app",
-                url: "{{ route('aplicaciones') }}",
-                keywords: ["aplicaciones", "mapas", "visor", "visualizador", "shiny", "graficas"]
-            },
-            {
-                title: "Herramientas y API de Consulta",
-                desc: "GraphQL, endpoints REST y plataformas para desarrolladores.",
-                category: "Herramienta",
-                badgeClass: "badge-cat-tool",
-                url: "{{ route('herramientas') }}",
-                keywords: ["api", "herramientas", "graphql", "zendro", "descarga", "json", "datos"]
-            },
-            {
-                title: "Forma de Citar y Referencias",
-                desc: "Cómo citar adecuadamente las bases de datos y el portal SIAgroBD.",
-                category: "Sección",
-                badgeClass: "badge-cat-section",
-                url: "{{ route('forma_citar') }}",
-                keywords: ["citar", "como citar", "referencia", "doi", "creditos", "fao", "conabio"]
-            },
-            {
-                title: "¡Queremos escucharte! (Contacto)",
-                desc: "Envío de dudas, retroalimentación técnica y mensajes a CONABIO.",
-                category: "Sección",
-                badgeClass: "badge-cat-section",
-                url: "{{ route('forma_citar') }}",
-                keywords: ["contacto", "correo", "dudas", "sugerencias", "retroalimentacion", "mensaje"]
-            },
-            {
-                title: "Registro de Usuarios",
-                desc: "Crea tu cuenta institucional o pública para acceder a interfaces y descargas.",
-                category: "Sección",
-                badgeClass: "badge-cat-section",
-                url: "{{ route('registro') }}",
-                keywords: ["registro", "cuenta", "usuario", "login", "iniciar", "registrarse"]
-            }
-        ];
-        const searchInput = document.getElementById('indexGlobalSearch');
-        const resultsDropdown = document.getElementById('searchResultsDropdown');
+        const input = document.getElementById('indexGlobalSearch');
+        const dropdown = document.getElementById('searchResultsDropdown');
         const btnClear = document.getElementById('btnClearSearch');
         const btnSearch = document.getElementById('btnSearchAction');
-        function executeSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            if (!query) {
-                searchInput.focus();
-                return;
-            }
-            const matches = portalCatalog.filter(item => {
-                const inTitle = item.title.toLowerCase().includes(query);
-                const inDesc = item.desc.toLowerCase().includes(query);
-                const inKeywords = item.keywords.some(k => k.toLowerCase().includes(query));
-                return inTitle || inDesc || inKeywords;
-            });
-            if (matches.length > 0) {
-                window.location.href = matches[0].url;
-            } else {
-                resultsDropdown.innerHTML = `
-                    <div class="p-3 text-center text-muted small">
-                        <i class="bi bi-search me-1 text-secondary"></i> No se encontraron coincidencias para "<strong>${query}</strong>".<br>
-                        <span class="text-secondary" style="font-size: 0.75rem;">Intenta buscando: <em>Maíces, Canastas, Colectas, Kobo o Nutrición</em>.</span>
-                    </div>
-                `;
-                resultsDropdown.style.display = 'block';
+        let timeout = null;
+        let ultimosResultados = [];
+        async function ejecutarBusquedaServidor(query) {
+            try {
+                const res = await fetch(`{{ route('buscar.global') }}?q=${encodeURIComponent(query)}`);
+                const matches = await res.json();
+                ultimosResultados = matches;
+                render(matches, query);
+            } catch (err) {
+                console.error("Error al buscar en el servidor:", err);
             }
         }
-        btnSearch.addEventListener('click', function(e) {
-            e.preventDefault();
-            executeSearch();
+        function render(matches, query) {
+            if (!matches || matches.length === 0) {
+                dropdown.innerHTML = `
+                    <div class="p-3 text-center text-muted small">
+                        <i class="bi bi-search me-1 text-secondary"></i> No se encontraron coincidencias para "<strong>${escapeHtml(query)}</strong>" en ninguna página del portal.<br>
+                        <span style="font-size: 0.75rem;">Intenta con otra palabra.</span>
+                    </div>`;
+            } else {
+                dropdown.innerHTML = matches.map(item => `
+                    <a href="${item.url}" class="search-card-result">
+                        <div class="pe-2 overflow-hidden">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="badge-result-pill ${item.badge}">${item.category}</span>
+                                <span class="fw-bold text-truncate" style="font-size: 0.88rem; color: #111827;">${item.title}</span>
+                            </div>
+                            <p class="text-muted small mb-0 text-truncate" style="font-size: 0.76rem; max-width: 500px;">${item.desc}</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted" style="font-size: 0.8rem;"></i>
+                    </a>
+                `).join('');
+            }
+            dropdown.style.display = 'block';
+        }
+        function escapeHtml(text) {
+            return (text || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        input.addEventListener('input', function() {
+            const q = this.value.trim();
+            btnClear.style.display = q.length > 0 ? 'block' : 'none';
+
+            if (q.length < 2) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                ejecutarBusquedaServidor(q);
+            }, 250);
         });
-        searchInput.addEventListener('keydown', function(e) {
+
+        function go() {
+            if (ultimosResultados.length > 0) {
+                window.location.href = ultimosResultados[0].url;
+            } else if (input.value.trim().length >= 2) {
+                ejecutarBusquedaServidor(input.value.trim());
+            }
+        }
+
+        btnSearch.addEventListener('click', go);
+
+        input.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                executeSearch();
+                go();
             }
         });
-        searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            btnClear.style.display = query.length > 0 ? 'block' : 'none';
 
-            if (query.length < 2) {
-                resultsDropdown.style.display = 'none';
-                resultsDropdown.innerHTML = '';
-                return;
-            }
-            const matches = portalCatalog.filter(item => {
-                const inTitle = item.title.toLowerCase().includes(query);
-                const inDesc = item.desc.toLowerCase().includes(query);
-                const inKeywords = item.keywords.some(k => k.toLowerCase().includes(query));
-                return inTitle || inDesc || inKeywords;
-            });
-            if (matches.length > 0) {
-                let html = '<div class="p-1">';
-                matches.slice(0, 5).forEach(item => {
-                    html += `
-                        <a href="${item.url}" class="search-card-result">
-                            <div class="pe-2 overflow-hidden">
-                                <div class="d-flex align-items-center mb-1">
-                                    <span class="badge-result-pill ${item.badgeClass}">${item.category}</span>
-                                    <span class="fw-bold" style="font-size: 0.88rem; color: #111827;">${item.title}</span>
-                                </div>
-                                <p class="text-muted small mb-0 text-truncate" style="font-size: 0.77rem; max-width: 480px;">${item.desc}</p>
-                            </div>
-                            <i class="bi bi-chevron-right text-muted" style="font-size: 0.8rem;"></i>
-                        </a>
-                    `;
-                });
-                html += '</div>';
-                resultsDropdown.innerHTML = html;
-                resultsDropdown.style.display = 'block';
-            } else {
-                resultsDropdown.innerHTML = `
-                    <div class="p-3 text-center text-muted small">
-                        <i class="bi bi-search me-1 text-secondary"></i> No se encontraron coincidencias para "<strong>${query}</strong>".<br>
-                        <span class="text-secondary" style="font-size: 0.75rem;">Intenta buscando: <em>Maíces, Canastas, Colectas, Kobo o Nutrición</em>.</span>
-                    </div>
-                `;
-                resultsDropdown.style.display = 'block';
-            }
+        btnClear.addEventListener('click', () => {
+            input.value = '';
+            btnClear.style.display = 'none';
+            dropdown.style.display = 'none';
+            ultimosResultados = [];
+            input.focus();
         });
-        btnClear.addEventListener('click', function() {
-            searchInput.value = '';
-            this.style.display = 'none';
-            resultsDropdown.style.display = 'none';
-            searchInput.focus();
-        });
+
         function searchExample(term) {
-            searchInput.value = term;
-            searchInput.dispatchEvent(new Event('input'));
-            searchInput.focus();
+            input.value = term;
+            btnClear.style.display = 'block';
+            ejecutarBusquedaServidor(term);
+            input.focus();
         }
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !resultsDropdown.contains(e.target) && !btnSearch.contains(e.target)) {
-                resultsDropdown.style.display = 'none';
+
+        document.addEventListener('click', e => {
+            if (!input.contains(e.target) && !dropdown.contains(e.target) && !btnSearch.contains(e.target)) {
+                dropdown.style.display = 'none';
             }
         });
     </script>

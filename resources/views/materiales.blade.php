@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Materiales de Comunicación | SIAgroBD - CONABIO</title>
-        <link rel="icon" type="image/png" sizes="128x128" href="{{ asset('images/siagro-favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="128x128" href="{{ asset('images/siagro-favicon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1042,44 +1042,81 @@
         const filterPills = document.querySelectorAll('.filter-pill');
         const cards = document.querySelectorAll('.resource-interactive-card');
         const searchInput = document.getElementById('liveSearchInput');
-        filterPills.forEach(pill => {
-            pill.addEventListener('click', function() {
-                filterPills.forEach(p => p.classList.remove('active'));
-                this.classList.add('active');
-                const filter = this.getAttribute('data-filter');
-                cards.forEach(card => {
-                    const format = card.getAttribute('data-format');
-                    if (filter === 'all' || format === filter) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-                if (filter !== 'all') {
-                    document.querySelectorAll('.accordion-collapse').forEach(acc => {
-                        new bootstrap.Collapse(acc, { show: true });
-                    });
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        function clean(str) {
+            return (str || '')
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .trim();
+        }
+        function getVariations(query) {
+            const q = clean(query);
+            if (!q) return [];
+            const vars = [q];
+
+            if (q.length > 3) {
+                if (q.endsWith('s')) {
+                    vars.push(q.slice(0, -1));
                 }
-            });
-        });
-        searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            if (query.length > 0) {
-                document.querySelectorAll('.accordion-collapse').forEach(acc => {
-                    new bootstrap.Collapse(acc, { show: true });
-                });
+                if (q.endsWith('es')) {
+                    vars.push(q.slice(0, -2));
+                }
+                if (q.endsWith('ces')) {
+                    vars.push(q.slice(0, -3) + 'z');
+                }
             }
+            return vars;
+        }
+        function aplicarFiltros() {
+            const activePill = document.querySelector('.filter-pill.active');
+            const currentFilter = activePill ? activePill.getAttribute('data-filter') : 'all';
+            const query = searchInput.value.trim();
+            const queryVars = getVariations(query);
+            const isFiltering = currentFilter !== 'all' || query.length > 0;
             cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(query)) {
+                const format = card.getAttribute('data-format');
+                const formatMatch = (currentFilter === 'all' || format === currentFilter);
+                let textMatch = true;
+                if (queryVars.length > 0) {
+                    const cardText = clean(card.textContent);
+                    textMatch = queryVars.some(v => cardText.includes(v));
+                }
+
+                if (formatMatch && textMatch) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
             });
+            accordionItems.forEach(item => {
+                const collapseEl = item.querySelector('.accordion-collapse');
+                const bsCollapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+                const visibleCards = item.querySelectorAll('.resource-interactive-card:not([style*="display: none"])');
+
+                if (isFiltering) {
+                    if (visibleCards.length > 0) {
+                        item.style.display = '';
+                        bsCollapse.show();
+                    } else {
+                        item.style.display = 'none';
+                    }
+                } else {
+                    item.style.display = '';
+                }
+            });
+        }
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', function(e) {
+                e.preventDefault();
+                filterPills.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                aplicarFiltros(); // Se activa con 1 SOLO CLIC
+            });
+        });
+        searchInput.addEventListener('input', function() {
+            aplicarFiltros();
         });
     </script>
 </body>
 </html>
-
-

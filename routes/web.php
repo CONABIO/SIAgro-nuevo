@@ -5,6 +5,8 @@ use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DescargasController;
 use App\Http\Controllers\RegistroInternoController;
 use App\Http\Controllers\DescargaInternaController;
+use App\Http\Controllers\BusquedaController;
+use App\Http\Controllers\RecuperaContrasenaController;
 
 Route::get('/', function () {return view('index');})->name('home');
 
@@ -48,6 +50,11 @@ Route::post('/colectas/descargas/verificar', [DescargaInternaController::class, 
 Route::get('/colectas/descargas/panel', [DescargaInternaController::class, 'panel'])->name('colectas.descargas.panel');
 Route::post('/colectas/descargas/exportar', [DescargaInternaController::class, 'exportar'])->name('colectas.descargas.exportar');
 Route::get('/colectas/descargas/salir', [DescargaInternaController::class, 'salir'])->name('colectas.descargas.salir');
+
+Route::get('/api/buscar-global', [BusquedaController::class, 'buscar'])->name('buscar.global');
+
+Route::get('/recupera_contrasena', [RecuperaContrasenaController::class, 'index'])->name('recupera.index');
+Route::post('/recupera_contrasena', [RecuperaContrasenaController::class, 'update'])->name('recupera.update');
 
 Route::get('/proxy/enciclovida/conteo', function (Request $request) {
     $queryString = $request->getQueryString();

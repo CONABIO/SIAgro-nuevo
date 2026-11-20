@@ -2,17 +2,32 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
+    'siagro_instances' => [
+        'canastas' => [
+            'username' => env('SIAGRO_CANASTAS_USER'),
+            'password' => env('SIAGRO_CANASTAS_PASS'),
+        ],
+        'maices' => [
+            'username' => env('SIAGRO_MAICES_USER'),
+            'password' => env('SIAGRO_MAICES_PASS'),
+        ],
+        'focales' => [
+            'username' => env('SIAGRO_FOCALES_USER'),
+            'password' => env('SIAGRO_FOCALES_PASS'),
+        ],
+        'especies' => [
+            'username' => env('SIAGRO_ESPECIES_USER'),
+            'password' => env('SIAGRO_ESPECIES_PASS'),
+        ],
+        'nutricion' => [
+            'username' => env('SIAGRO_NUTRICION_USER'),
+            'password' => env('SIAGRO_NUTRICION_PASS'),
+        ],
+        'colectas_gef' => [
+            'username' => env('SIAGRO_COLECTAS_GEF_USER'),
+            'password' => env('SIAGRO_COLECTAS_GEF_PASS'),
+        ],
+    ],
 
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),

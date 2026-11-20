@@ -1,0 +1,146 @@
+[
+  {
+    "title": "Bases de Datos (Módulo General)",
+    "desc": "Consulta y descarga todos los datasets y datos abiertos de agrobiodiversidad.",
+    "category": "Bases de Datos",
+    "badge": "badge-cat-bd",
+    "url": "/bases-datos",
+    "tags": "bases base datos datasets registros abiertos descargas pgm gef"
+  },
+  {
+    "title": "Proyecto Global de Maíces Nativos",
+    "desc": "Colecciones y razas de maíces nativos y parientes silvestres en México.",
+    "category": "Base de datos",
+    "badge": "badge-cat-bd",
+    "url": "/bases-datos",
+    "tags": "maiz maices razas teocintle milpa criollo mazorca base datos"
+  },
+  {
+    "title": "Canastas Regionales del Bien Comer",
+    "desc": "Dieta tradicional indígena, quelites, milpa y alimentos locales.",
+    "category": "Base de datos",
+    "badge": "badge-cat-bd",
+    "url": "/bases-datos",
+    "tags": "canastas bien comer nutricion quelites alimentos dieta comida milpa base datos"
+  },
+  {
+    "title": "Colectas GEF Agrobiodiversidad",
+    "desc": "Germoplasma de calabaza, frijol, chile, amaranto y agaves.",
+    "category": "Base de datos",
+    "badge": "badge-cat-bd",
+    "url": "/bases-datos",
+    "tags": "colectas gef calabaza frijol chile agave amaranto germoplasma base datos"
+  },
+  {
+    "title": "Cartel: Calabazas de México",
+    "desc": "Diversidad de calabazas nativas (Cucurbita) y parientes silvestres.",
+    "category": "Cartel",
+    "badge": "badge-cat-cartel",
+    "url": "/materiales",
+    "tags": "calabaza calabazas cucurbita chilacayote pipiana tamalayota cartel"
+  },
+  {
+    "title": "Video: Aprovechamiento de la calabaza en la Tarahumara",
+    "desc": "Uso tradicional y culinario de la calabaza por el pueblo rarámuri.",
+    "category": "Video",
+    "badge": "badge-cat-video",
+    "url": "/materiales",
+    "tags": "calabaza calabazas video raramuri tarahumara chihuahua comida"
+  },
+  {
+    "title": "Cartel: Quelites de México",
+    "desc": "Hierbas y verduras tradicionales comestibles asociadas a la milpa.",
+    "category": "Cartel",
+    "badge": "badge-cat-cartel",
+    "url": "/materiales",
+    "tags": "quelite quelites papalo quintonil verdolaga alache cartel milpa"
+  },
+  {
+    "title": "Serie en Video: Quelites en México",
+    "desc": "Documental sobre recolección, consumo y valor cultural de los quelites.",
+    "category": "Video",
+    "badge": "badge-cat-video",
+    "url": "/materiales",
+    "tags": "quelite quelites video serie cocina comida tradicional"
+  },
+  {
+    "title": "Libro: Chiles, quelites y condimentos",
+    "desc": "Publicación sobre hierbas aromáticas, quelites y chiles tradicionales.",
+    "category": "Libro",
+    "badge": "badge-cat-libro",
+    "url": "/materiales",
+    "tags": "libro quelites chiles condimentos recetas pdf cocina"
+  },
+  {
+    "title": "Especie: Calabazas (Cucurbita)",
+    "desc": "Catálogo de especies de calabaza domesticadas y silvestres en México.",
+    "category": "Especie",
+    "badge": "badge-cat-especie",
+    "url": "/especies",
+    "tags": "calabaza calabazas cucurbita chilacayote especie flora"
+  },
+  {
+    "title": "Especie: Quelites tradicionales",
+    "desc": "Fichas de pápalo, alache, verdolaga, quintonil, chepil y chaya.",
+    "category": "Especie",
+    "badge": "badge-cat-especie",
+    "url": "/especies",
+    "tags": "quelite quelites papalo alache verdolaga quintonil chaya especie"
+  },
+  {
+    "title": "Cartel: Frijoles domesticados en México",
+    "desc": "Diversidad del género Phaseolus domesticado en México.",
+    "category": "Cartel",
+    "badge": "badge-cat-cartel",
+    "url": "/materiales",
+    "tags": "frijol frijoles phaseolus ayocote cartel leguminosas"
+  },
+  {
+    "title": "Cartel: Chiles de México",
+    "desc": "Variedades secas y frescas del género Capsicum en la gastronomía.",
+    "category": "Cartel",
+    "badge": "badge-cat-cartel",
+    "url": "/materiales",
+    "tags": "chile chiles capsicum serrano habanero piquin cartel"
+  },
+  {
+    "title": "Cartel: México, tierra de magueyes",
+    "desc": "Diversidad de agaves y sus usos tradicionales (pulque, mezcal).",
+    "category": "Cartel",
+    "badge": "badge-cat-cartel",
+    "url": "/materiales",
+    "tags": "maguey agaves agave mezcal pulque tequila cartel"
+  },
+  {
+    "title": "Manual KoBoToolbox - CONABIO",
+    "desc": "Guía técnica para captura y levantamiento de datos en campo.",
+    "category": "Manual",
+    "badge": "badge-cat-doc",
+    "url": "/materiales-tecnicos",
+    "tags": "kobo kobotoolbox manual captura campo formularios pdf"
+  },
+  {
+    "title": "Aplicaciones y Mapas Interactivos",
+    "desc": "Visualizadores de razas de maíz, clima y mapas espaciales.",
+    "category": "Aplicación",
+    "badge": "badge-cat-app",
+    "url": "/aplicaciones",
+    "tags": "mapas mapa visualizador maices aplicaciones shiny"
+  },
+  {
+    "title": "API y Herramientas para Desarrolladores",
+    "desc": "Consultas GraphQL, Zendro y servicios web de datos.",
+    "category": "Herramienta",
+    "badge": "badge-cat-tool",
+    "url": "/herramientas",
+    "tags": "api graphql zendro json programacion desarrolladores"
+  },
+  {
+    "title": "Forma de Citar y Referencias",
+    "desc": "Cómo citar adecuadamente las bases de datos y el portal SIAgroBD.",
+    "category": "Sección",
+    "badge": "badge-cat-section",
+    "url": "/forma-citar",
+    "tags": "citar forma citar referencia referencias credito bases datos"
+  }
+]

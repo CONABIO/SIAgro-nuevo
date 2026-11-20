@@ -11,7 +11,6 @@ async function countEjemplares() {
             }
         } catch (e) {}
     }
-    // En local / desarrollo coloca la cifra sin disparar el error de CORS
     if (el) el.textContent = "7,783";
 }
 

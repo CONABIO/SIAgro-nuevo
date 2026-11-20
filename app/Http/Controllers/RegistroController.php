@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Registro;
+use App\Services\KeycloakSyncService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistroExitosoMail;
 
@@ -13,7 +16,7 @@ class RegistroController extends Controller
         return openssl_encrypt($valor, $method, $clave, false, $iv);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, KeycloakSyncService $keycloak)
     {
         $request->validate([
             'form-nombre'       => 'required|string|max:100',
@@ -40,47 +43,84 @@ class RegistroController extends Controller
             'form-pais.required'       => 'El país es obligatorio.',
             'uso.required'             => 'Debes elegir al menos una razón de consulta.',
         ]);
-        $nombre       = $request->input('form-nombre');
-        $apellidos    = $request->input('form-apellido');
-        $correo       = $request->input('form-email');
-        $usuario      = $request->input('form-usuario');
-        $contrasena   = $request->input('form-contrasena');
-        $institucion  = $request->input('form-institucion');
-        $estado       = $request->input('form-estado');
-        $pais         = $request->input('form-pais');
-        $uso = implode(', ', $request->input('uso', []));
+        $nombre      = $request->input('form-nombre');
+        $apellidos   = $request->input('form-apellido');
+        $correo      = $request->input('form-email');
+        $usuario     = $request->input('form-usuario');
+        $contrasena  = $request->input('form-contrasena');
+        $institucion = $request->input('form-institucion');
+        $estado      = $request->input('form-estado');
+        $pais        = $request->input('form-pais');
+        $uso         = implode(', ', $request->input('uso', []));
+        try {
+            if ($keycloak->userExistsInAnyInstance($usuario, $correo)) {
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'El usuario o correo ya existen en el sistema.'
+                ], 409);
+            }
+        } catch (\Exception $e) {
+            \Log::error("Error verificando instancias Keycloak: " . $e->getMessage());
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'No se pudo conectar con los servicios de autenticación.'
+            ], 500);
+        }
         $method = 'aes-256-cbc';
-        $clave = $uso;
-        if (strlen($clave) > 16) {
-            $clave = substr($clave, 0, 16);
-        }
-        if (strlen($clave) < 16) {
-            $clave = str_pad($clave, 16, "_");
-        }
-        $iv = $correo;
-        if (strlen($iv) > 16) {
-            $iv = substr($iv, 0, 16);
-        }
-        if (strlen($iv) < 16) {
-            $iv = str_pad($iv, 16, "_");
-        }
+        $clave  = substr(str_pad($uso, 16, "_"), 0, 16);
+        $iv     = substr(str_pad($correo, 16, "_"), 0, 16);
         $contrasenaFinal = $this->encriptar($contrasena, $method, $clave, false, $iv);
-        Registro::create([
-            'nombre'      => $nombre,
-            'apellido'    => $apellidos,
-            'correo'      => $correo,
-            'usuario'     => $usuario,
-            'contrasena'  => $contrasenaFinal,
-            'pais'        => $pais,
-            'estado'      => $estado,
-            'institucion' => $institucion,
-            'uso'         => $uso,
-        ]);
-         try {
+        DB::beginTransaction();
+        try {
+            Registro::create([
+                'nombre'      => $nombre,
+                'apellido'    => $apellidos,
+                'correo'      => $correo,
+                'usuario'     => $usuario,
+                'contrasena'  => $contrasenaFinal,
+                'pais'        => $pais,
+                'estado'      => $estado,
+                'institucion' => $institucion,
+                'uso'         => $uso,
+            ]);
+            $kcStatus = $keycloak->createUserInAllInstances([
+                'nombre'           => $nombre,
+                'apellidos'        => $apellidos,
+                'correo'           => $correo,
+                'usuario'          => $usuario,
+                'contrasena_plana' => $contrasena,
+                'institucion'      => $institucion,
+                'estado'           => $estado,
+                'pais'             => $pais,
+                'uso'              => $uso,
+            ]);
+
+            if ($kcStatus === 409) {
+                DB::rollBack();
+                return response()->json(['status' => 'error'], 409);
+            }
+
+            if ($kcStatus !== 201) {
+                DB::rollBack();
+                return response()->json([
+                    'status'  => 'error',
+                    'message' => 'Error al sincronizar el usuario con las bases de datos.'
+                ], 500);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error("Error en registro: " . $e->getMessage());
+            return response()->json(['status' => 'error'], 500);
+        }
+
+        try {
             Mail::to($correo)->send(new RegistroExitosoMail($nombre));
         } catch (\Exception $e) {
             \Log::error("Error al enviar correo de registro: " . $e->getMessage());
         }
+
         return response()->json([
             'status'  => 'success',
             'message' => '¡Te registraste exitosamente en el SIAgroBD! Te hemos enviado un correo de confirmación.'

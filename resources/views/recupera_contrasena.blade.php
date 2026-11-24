@@ -193,6 +193,7 @@
             $.ajax({
                 url: $('#recoverForm').attr('action'),
                 type: 'POST',
+                dataType: 'json',
                 data: $('#recoverForm').serialize(),
                 success: function(response) {
                     $('#success_rec').show().html('<i class="bi bi-check-circle-fill me-1"></i> ' + (response.message || '¡Cambiaste tu contraseña exitosamente!'));

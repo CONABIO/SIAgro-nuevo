@@ -53,8 +53,27 @@ Route::get('/colectas/descargas/salir', [DescargaInternaController::class, 'sali
 
 Route::get('/api/buscar-global', [BusquedaController::class, 'buscar'])->name('buscar.global');
 
-Route::get('/recupera_contrasena/', [RecuperaContrasenaController::class, 'index'])->name('recupera.index');
-Route::post('/recupera_contrasena/', [RecuperaContrasenaController::class, 'update'])->name('recupera.update');
+Route::get('/api/conteo-colectas', function () {
+    $ruta = app_path('datasets/colectas/colectas.csv');
+    if (!file_exists($ruta)) {
+        return response()->json(['error' => 'No se encontró el archivo en: ' . $ruta, 'total' => 0]);
+    }
+    $lineas = 0;
+    $fp = fopen($ruta, 'r');
+    while (!feof($fp)) {
+        $line = fgets($fp);
+        if ($line !== false && trim($line) !== '') {
+            $lineas++;
+        }
+    }
+    fclose($fp);
+    $total = max(0, $lineas - 1);
+    return response()->json([
+        'archivo' => $ruta,
+        'total' => $total
+    ]);
+});
+
 
 Route::get('/proxy/enciclovida/conteo', function (Request $request) {
     $queryString = $request->getQueryString();

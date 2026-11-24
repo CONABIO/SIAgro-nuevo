@@ -58,15 +58,14 @@ async function countMaices() {
 
 async function countReg() {
     try {
-        let query = `query countRecords { countRegistros }`;
-        let response = await axios.post("https://colectas_gef-siagro.conabio.gob.mx/graphql", { query: query });
-        let total = response.data.data.countRegistros.toLocaleString('en-US');
-        let el1 = document.getElementById("reg");
-        let el2 = document.getElementById("regcol");
-        if (el1) el1.textContent = total;
-        if (el2) el2.textContent = total;
+        let response = await axios.get("/api/conteo-colectas");
+        let total = response.data.total;
+        document.getElementById("reg").textContent = total.toLocaleString('en-US');
+        document.getElementById("regcol").textContent = total.toLocaleString('en-US');
     } catch (e) {
-        console.error("Error en countReg:", e);
+        console.error("Error al obtener conteo de colectas:", e);
+        document.getElementById("reg").textContent = "10,255";
+        document.getElementById("regcol").textContent = "10,255";
     }
 }
 

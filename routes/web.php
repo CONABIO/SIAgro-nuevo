@@ -53,9 +53,8 @@ Route::get('/colectas/descargas/salir', [DescargaInternaController::class, 'sali
 
 Route::get('/api/buscar-global', [BusquedaController::class, 'buscar'])->name('buscar.global');
 
-Route::get('/recupera_contrasena', [RecuperaContrasenaController::class, 'index'])->name('recupera.index');
-
-Route::post('/recupera_contrasena', [RecuperaContrasenaController::class, 'update'])->name('recupera.update');
+Route::get('/recupera_contrasena/', [RecuperaContrasenaController::class, 'index'])->name('recupera.index');
+Route::post('/recupera_contrasena/', [RecuperaContrasenaController::class, 'update'])->name('recupera.update');
 
 Route::get('/proxy/enciclovida/conteo', function (Request $request) {
     $queryString = $request->getQueryString();

@@ -190,8 +190,13 @@
             $('#btn-text').addClass('d-none');
             $('#btn-spinner').removeClass('d-none');
 
+            let actionUrl = $('#recoverForm').attr('action');
+            if (!actionUrl.endsWith('/')) {
+                actionUrl += '/';
+            }
+
             $.ajax({
-                url: $('#recoverForm').attr('action'),
+                url: actionUrl,
                 type: 'POST',
                 dataType: 'json',
                 data: $('#recoverForm').serialize(),
@@ -215,8 +220,9 @@
                         });
                         errorMsg += '</ul>';
                         $('#error_rec').show().html(errorMsg);
-                    } else if (xhr.status === 409) {
-                        $('#error_rec').show().html('<i class="bi bi-exclamation-triangle-fill me-1"></i> El usuario o correo no existen, favor de modificarlos.');
+                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                        // Muestra el mensaje específico que manda tu controlador (ej. si falla Keycloak o el usuario no existe)
+                        $('#error_rec').show().html('<i class="bi bi-exclamation-triangle-fill me-1"></i> ' + xhr.responseJSON.message);
                     } else {
                         $('#error_rec').show().html('<i class="bi bi-x-circle-fill me-1"></i> Ocurrió un error al cambiar la contraseña. Inténtalo de nuevo.');
                     }

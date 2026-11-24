@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bases de Datos | SIAgroBD - CONABIO</title>
-    <link rel="icon" type="image/png" sizes="128x128" href="{{ asset('images/siagro-favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="128x128" href="{{ secure_asset('images/siagro-favicon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="section-separator">
-            <span>De las cuales en el proyecto Agrobiodiversidad Mexicana se han colectado <strong id="reg" class="text-success">...</strong> nuevos registros:</span>
+            <span>De las cuales en el proyecto Agrobiodiversidad Mexicana se han colectado <strong id="reg" class="text-success">{{ number_format($totalColectas) }}</strong> nuevos registros:</span>
         </div>
         <div class="row g-4 mb-4">
             <div class="col-lg-6">
@@ -215,7 +215,7 @@
                         <p class="dataset-desc">
                             Como parte del Proyecto Agrobiodiversidad Mexicana, varios equipos de investigación de diferentes instituciones hicieron trabajo de campo entre 2019 y 2022 para actualizar la información sobre doce especies clave de la agrobiodiversidad mexicana. Se colectaron datos biológicos, geográficos, agronómicos, socioeconómicos y culturales, así como fotografías.
                             <br><br>
-                            A la fecha se han colectado <a id="regcol" class="fw-bold text-success text-decoration-none">...</a> nuevos registros mediante estas colectas.
+                            A la fecha se han colectado <a id="regcol" class="fw-bold text-success text-decoration-none">{{ number_format($totalColectas) }}</a> nuevos registros mediante estas colectas.
                         </p>
 
                         <div class="dataset-doc-links">

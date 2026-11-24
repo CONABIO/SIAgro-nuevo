@@ -53,26 +53,17 @@ Route::get('/colectas/descargas/salir', [DescargaInternaController::class, 'sali
 
 Route::get('/api/buscar-global', [BusquedaController::class, 'buscar'])->name('buscar.global');
 
-Route::get('/api/conteo-colectas', function () {
+Route::get('/bases-de-datos', function () {
     $ruta = app_path('datasets/colectas/colectas.csv');
-    if (!file_exists($ruta)) {
-        return response()->json(['error' => 'No se encontró el archivo en: ' . $ruta, 'total' => 0]);
+    $totalColectas = 0;
+    if (file_exists($ruta)) {
+        $file = new \SplFileObject($ruta, 'r');
+        $file->seek(PHP_INT_MAX);
+        $totalColectas = max(0, $file->key());
     }
-    $lineas = 0;
-    $fp = fopen($ruta, 'r');
-    while (!feof($fp)) {
-        $line = fgets($fp);
-        if ($line !== false && trim($line) !== '') {
-            $lineas++;
-        }
-    }
-    fclose($fp);
-    $total = max(0, $lineas - 1);
-    return response()->json([
-        'archivo' => $ruta,
-        'total' => $total
-    ]);
-});
+
+    return view('bases_de_datos', compact('totalColectas'));
+})->name('bases.datos');
 
 
 Route::get('/proxy/enciclovida/conteo', function (Request $request) {

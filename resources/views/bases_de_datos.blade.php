@@ -235,7 +235,7 @@
                             <a href="https://colectas_gef-siagro.conabio.gob.mx/graphql" target="_blank" class="btn-db btn-db-api">
                                 <i class="bi bi-code-square"></i> API
                             </a>
-                            <a href="{{ route('descargas.show', 'colectas') }}" class="btn-db btn-db-download">
+                            <a href="{{ route('descargas.show', 'colectas_gef') }}" class="btn-db btn-db-download">
                                 <i class="bi bi-download"></i> Descargar
                             </a>
                         </div>

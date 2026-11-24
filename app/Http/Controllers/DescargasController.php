@@ -9,7 +9,7 @@ class DescargasController extends Controller
 {
     public function show($modulo)
     {
-        $vistasValidas = ['focales', 'colectas', 'canastas', 'maices'];
+        $vistasValidas = ['focales', 'colectas_gef', 'canastas', 'maices'];
         if (!in_array($modulo, $vistasValidas)) {
             abort(404);
         }
@@ -65,7 +65,7 @@ class DescargasController extends Controller
                 $taxonesMaices = [];
             }
         }
-        return view("descargas.{$modulo}", compact('modulo', 'proyectosMaices', 'taxonesMaices'));
+        return view("{$modulo}.download.index", compact('modulo', 'proyectosMaices', 'taxonesMaices'));
     }
 
     public function exportar(Request $request, $modulo)

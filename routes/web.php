@@ -36,7 +36,7 @@ Route::post('/registro', [RegistroController::class, 'store'])->name('registro.s
 
 Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
 
-Route::get('/descargas/{modulo}', [DescargasController::class, 'show'])->name('descargas.show');
+Route::get('/{modulo}/download', [DescargasController::class, 'show'])->name('descargas.show');
 
 Route::get('/descargas/{modulo}/exportar', [DescargasController::class, 'exportar'])->name('descargas.exportar');
 
